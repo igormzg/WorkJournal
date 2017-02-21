@@ -9,7 +9,7 @@ const NoteActions = {
             type: Constants.LOAD_NOTES_REQUEST
         });
 
-        api.listNotes()
+        api.notes.listNotes()
         .then(({ data }) =>
             AppDispatcher.dispatch({
                 type: Constants.LOAD_NOTES_SUCCESS,
@@ -25,7 +25,7 @@ const NoteActions = {
     },
 
     createNote(note) {
-        api.createNote(note)
+        api.notes.createNote(note)
         .then(() =>
             this.loadNotes()
         )
@@ -35,7 +35,7 @@ const NoteActions = {
     },
 
     deleteNote(noteId) {
-        api.deleteNote(noteId)
+        api.notes.deleteNote(noteId)
         .then(() =>
             this.loadNotes()
         )
