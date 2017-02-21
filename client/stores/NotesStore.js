@@ -4,6 +4,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 
 const CHANGE_EVENT = 'change';
+const PROJECTS_UPDATE_EVENT = 'PROJECTS_UPDATE_EVENT';
 
 let _notes = [];
 let _loadingError = null;
@@ -41,6 +42,30 @@ const TasksStore = Object.assign({}, EventEmitter.prototype, {
     }
 });
 
+const ProjectStore = Object.assign({}, EventEmitter.prototype, {
+    projects: [], 
+
+    isLoading() {
+        return _isLoading;
+    },
+
+    getProjects() {
+        return this.projects;
+    },
+
+    emitChange: function() {
+        this.emit(PROJECTS_UPDATE_EVENT);
+    },
+
+    addChangeListener: function(callback) {
+        this.on(PROJECTS_UPDATE_EVENT, callback);
+    },
+
+    removeChangeListener: function(callback) {
+        this.removeListener(PROJECTS_UPDATE_EVENT, callback);
+    }
+});
+
 AppDispatcher.register(function(action) {
     switch(action.type) {
         case AppConstants.LOAD_NOTES_REQUEST: {
@@ -66,10 +91,19 @@ AppDispatcher.register(function(action) {
             break;
         }
 
+        case AppConstants.LOAD_PROJECTS_SUCCESS: {
+            ProjectStore.projects = action.projects;
+            ProjectStore.emitChange();
+            break;
+        }
+
         default: {
             console.log('No such handler');
         }
     }
 });
 
-export default TasksStore;
+export default {
+    NotesStore: TasksStore,
+    ProjectStore: ProjectStore
+}

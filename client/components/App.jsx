@@ -1,35 +1,45 @@
 import React from 'react';
 
-import NotesStore from '../stores/NotesStore';
+import Store from '../stores/NotesStore';
 import NotesActions from '../actions/NotesActions';
+import ProjectActions from '../actions/ProjectsActions';
 
 import NoteEditor from './NoteEditor.jsx';
 import NotesGrid from './NotesGrid.jsx';
+//import ProjectSelect from './ProjectSelect.jsx';
+import ProjectMenu from './ProjectMenu.jsx';
 
 import './App.less';
 
 function getStateFromFlux() {
     return {
-        isLoading: NotesStore.isLoading(),
-        notes: NotesStore.getNotes()
+        isLoading: Store.NotesStore.isLoading(),
+        notes: Store.NotesStore.getNotes()
     };
 }
 
 const App = React.createClass({
     getInitialState() {
-        return getStateFromFlux();
+        return {
+            isLoading: Store.NotesStore.isLoading(),
+            notes: Store.NotesStore.getNotes(),
+            projects: Store.ProjectStore.getProjects()
+        };
     },
 
     componentWillMount() {
         NotesActions.loadNotes();
+        ProjectActions.loadProjects();
     },
 
     componentDidMount() {
-        NotesStore.addChangeListener(this._onChange);
+        Store.NotesStore.addChangeListener(this._onChange);        
+        Store.ProjectStore.addChangeListener(this._onProjectChange);
     },
 
     componentWillUnmount() {
-        NotesStore.removeChangeListener(this._onChange);
+        Store.NotesStore.removeChangeListener(this._onChange); 
+        Store.ProjectStore.removeChangeListener(this._onProjectChange);
     },
 
     handleNoteDelete(note) {
@@ -44,6 +54,7 @@ const App = React.createClass({
         return (
             <div className='App'>
                 <h2 className='App__header'>NotesApp</h2>
+                <ProjectMenu projects={this.state.projects} currentProject={this.state.projects[0]} />
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
                 <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
             </div>
@@ -52,6 +63,15 @@ const App = React.createClass({
 
     _onChange() {
         this.setState(getStateFromFlux());
+    },
+
+    _onProjectChange() {
+        this.setState(function () {
+           return {
+                isLoading: Store.ProjectStore.isLoading(),
+                projects: Store.ProjectStore.getProjects()
+            };
+        });
     }
 });
 

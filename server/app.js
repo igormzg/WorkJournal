@@ -40,6 +40,18 @@ app.delete('/notes/:id', (req, res) => {
     db.deleteNote(req.params.id).then(data => res.send(data));
 });
 
+//
+//Project routing
+//
+
+app.get('/projects', (req, res) => {
+    db.listProjects().then(data => res.send(data));
+});
+
+app.post('/project', (req, res) => {
+   db.createProject(req.body).then(data => res.send(data));
+});
+
 const server = app.listen(serverPort, function() {
     console.log(`Server is up and running on port ${serverPort}`);
 });

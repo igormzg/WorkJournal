@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import config from '../../etc/config.json';
 
 import '../models/Note';
+import '../models/Project';
 
 const Note = mongoose.model('Note');
+const Project = mongoose.model('Project');
 
 export function setUpConnection() {
     mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
@@ -27,5 +29,18 @@ export function createNote(data) {
 
 export function deleteNote(id) {
     return Note.findById(id).remove();
+}
+
+export function listProjects() {
+    return Project.find();
+}
+
+export function createProject(data){
+    const project = new Project({
+       name: data.name,
+       description: data.description 
+    });
+
+    return project.save();
 }
 
