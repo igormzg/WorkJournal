@@ -8,6 +8,6 @@ export default {
     },
 
     createProject(data) {
-        return axios.post(`${apiPrefix}/projects`, data);
+        return axios.post(`${apiPrefix}/project`, data);
     }
 }

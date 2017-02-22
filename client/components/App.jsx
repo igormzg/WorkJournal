@@ -6,8 +6,7 @@ import ProjectActions from '../actions/ProjectsActions';
 
 import NoteEditor from './NoteEditor.jsx';
 import NotesGrid from './NotesGrid.jsx';
-//import ProjectSelect from './ProjectSelect.jsx';
-import ProjectMenu from './ProjectMenu.jsx';
+import ProjectContainer from './ProjectContainer.jsx';
 
 import './App.less';
 
@@ -22,24 +21,20 @@ const App = React.createClass({
     getInitialState() {
         return {
             isLoading: Store.NotesStore.isLoading(),
-            notes: Store.NotesStore.getNotes(),
-            projects: Store.ProjectStore.getProjects()
+            notes: Store.NotesStore.getNotes()
         };
     },
 
     componentWillMount() {
         NotesActions.loadNotes();
-        ProjectActions.loadProjects();
     },
 
     componentDidMount() {
         Store.NotesStore.addChangeListener(this._onChange);        
-        Store.ProjectStore.addChangeListener(this._onProjectChange);
     },
 
     componentWillUnmount() {
         Store.NotesStore.removeChangeListener(this._onChange); 
-        Store.ProjectStore.removeChangeListener(this._onProjectChange);
     },
 
     handleNoteDelete(note) {
@@ -54,7 +49,7 @@ const App = React.createClass({
         return (
             <div className='App'>
                 <h2 className='App__header'>NotesApp</h2>
-                <ProjectMenu projects={this.state.projects} currentProject={this.state.projects[0]} />
+                <ProjectContainer />
                 <NoteEditor onNoteAdd={this.handleNoteAdd} />
                 <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
             </div>
@@ -69,7 +64,6 @@ const App = React.createClass({
         this.setState(function () {
            return {
                 isLoading: Store.ProjectStore.isLoading(),
-                projects: Store.ProjectStore.getProjects()
             };
         });
     }

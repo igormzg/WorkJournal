@@ -26,9 +26,13 @@ const NoteActions = {
 
     createProject(project) {
         api.projects.createProject(project)
-        .then(() =>
+        .then((resp) => {
             this.loadProjects()
-        )
+            AppDispatcher.dispatch({
+                type: Constants.CREATE_PROJECTS_SUCCESS,
+                project: resp.data
+            })
+        })
         .catch(err =>
             console.error(err)
         );

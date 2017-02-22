@@ -5,6 +5,7 @@ import AppConstants from '../constants/AppConstants';
 
 const CHANGE_EVENT = 'change';
 const PROJECTS_UPDATE_EVENT = 'PROJECTS_UPDATE_EVENT';
+const PROJECT_CREATE_EVENT = 'PROJECTS_CREATE_EVENT';
 
 let _notes = [];
 let _loadingError = null;
@@ -53,17 +54,33 @@ const ProjectStore = Object.assign({}, EventEmitter.prototype, {
         return this.projects;
     },
 
+    getNewProject() {
+        return this.newProject;
+    },
+
     emitChange: function() {
         this.emit(PROJECTS_UPDATE_EVENT);
+    },
+
+    emitCreate: function () {
+        this.emit(PROJECT_CREATE_EVENT);
     },
 
     addChangeListener: function(callback) {
         this.on(PROJECTS_UPDATE_EVENT, callback);
     },
 
+    addCreateListener: function (callback) {
+        this.on(PROJECT_CREATE_EVENT, callback);
+    },
+
     removeChangeListener: function(callback) {
         this.removeListener(PROJECTS_UPDATE_EVENT, callback);
-    }
+    },
+
+    removeCreateListener: function(callback) {
+        this.removeListener(PROJECT_CREATE_EVENT, callback);
+    },
 });
 
 AppDispatcher.register(function(action) {
@@ -95,6 +112,11 @@ AppDispatcher.register(function(action) {
             ProjectStore.projects = action.projects;
             ProjectStore.emitChange();
             break;
+        }
+
+        case AppConstants.CREATE_PROJECTS_SUCCESS: {
+            ProjectStore.newProject = action.project;
+            ProjectStore.emitCreate();
         }
 
         default: {

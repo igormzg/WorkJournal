@@ -6,5 +6,6 @@ export default keyMirror({
     LOAD_NOTES_FAIL: null,
     LOAD_PROJECTS_REQUESTL: null,
     LOAD_PROJECTS_SUCCESS: null,
-    LOAD_PROJECTS_FAIL: null
+    LOAD_PROJECTS_FAIL: null,
+    CREATE_PROJECTS_SUCCESS: null
 });
