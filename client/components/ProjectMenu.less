@@ -3,10 +3,29 @@
 }
 .project-menu li {
     padding: 5px;
+    position: relative;
 }
 .project-menu {
     margin: 0px;
     overflow: auto;
     height: 265px;
     list-style-type: none;
+}
+
+.project-menu li {
+    &:hover {
+        background: #CFD8DC;
+        .delete-icon {
+            display: block;
+        }
+    }
+}
+
+.delete-icon {
+    position: absolute;
+    top:5px;
+    right:5px;
+    display: none;
+    color: rgba(0,0,0,0.6);
+    cursor: pointer;
 }

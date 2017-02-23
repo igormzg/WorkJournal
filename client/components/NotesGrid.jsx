@@ -20,16 +20,17 @@ const NotesGrid = React.createClass({
                 options={masonryOptions}
             >
                 {
-                    this.props.notes.map(note =>
-                        <Note
-                            key={note.id}
-                            title={note.title}
-                            onDelete={this.props.onNoteDelete.bind(null, note)}
-                            color={note.color}
-                        >
-                            {note.text}
-                        </Note>
-                    )
+                    this.props.notes ?
+                        this.props.notes.map(note =>
+                            <Note
+                                key={note.id}
+                                title={note.title}
+                                onDelete={this.props.onNoteDelete.bind(null, note)}
+                                color={note.color}
+                            >
+                                {note.text}
+                            </Note>
+                        ) : null
                 }
             </Masonry>
         );

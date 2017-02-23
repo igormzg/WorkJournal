@@ -48,8 +48,21 @@ app.get('/projects', (req, res) => {
     db.listProjects().then(data => res.send(data));
 });
 
-app.post('/project', (req, res) => {
+app.put('/project', (req, res) => {
    db.createProject(req.body).then(data => res.send(data));
+});
+
+app.delete('/project/:id', (req, res) => {
+   db.deleteProject(req.params.id).then(data => res.send(data));
+});
+
+app.post('/project', (req, res) => {
+   db.updateProject(req.body, function (data, err) {
+        if(err) 
+            res.status(404).send(err);
+        else
+            res.send(data);
+   });
 });
 
 const server = app.listen(serverPort, function() {

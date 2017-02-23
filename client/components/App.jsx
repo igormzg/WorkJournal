@@ -18,55 +18,55 @@ function getStateFromFlux() {
 }
 
 const App = React.createClass({
-    getInitialState() {
-        return {
-            isLoading: Store.NotesStore.isLoading(),
-            notes: Store.NotesStore.getNotes()
-        };
-    },
+    // getInitialState() {
+    //     return {
+    //         isLoading: Store.NotesStore.isLoading(),
+    //         notes: Store.NotesStore.getNotes()
+    //     };
+    // },
 
-    componentWillMount() {
-        NotesActions.loadNotes();
-    },
+    // componentWillMount() {
+    //     NotesActions.loadNotes();
+    // },
 
-    componentDidMount() {
-        Store.NotesStore.addChangeListener(this._onChange);        
-    },
+    // componentDidMount() {
+    //     Store.NotesStore.addChangeListener(this._onChange);        
+    // },
 
-    componentWillUnmount() {
-        Store.NotesStore.removeChangeListener(this._onChange); 
-    },
+    // componentWillUnmount() {
+    //     Store.NotesStore.removeChangeListener(this._onChange); 
+    // },
 
-    handleNoteDelete(note) {
-        NotesActions.deleteNote(note.id);
-    },
+    // handleNoteDelete(note) {
+    //     NotesActions.deleteNote(note.id);
+    // },
 
-    handleNoteAdd(noteData) {
-        NotesActions.createNote(noteData);
-    },
+    // handleNoteAdd(noteData) {
+    //     NotesActions.createNote(noteData);
+    // },
 
     render() {
         return (
             <div className='App'>
-                <h2 className='App__header'>NotesApp</h2>
+                <h2 className='App__header'>Projects App</h2>
                 <ProjectContainer />
-                <NoteEditor onNoteAdd={this.handleNoteAdd} />
-                <NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
+                {/*<NoteEditor onNoteAdd={this.handleNoteAdd} />*/}
+                {/*<NotesGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />*/}
             </div>
         );
     },
 
-    _onChange() {
-        this.setState(getStateFromFlux());
-    },
+    // _onChange() {
+    //     this.setState(getStateFromFlux());
+    // },
 
-    _onProjectChange() {
-        this.setState(function () {
-           return {
-                isLoading: Store.ProjectStore.isLoading(),
-            };
-        });
-    }
+    // _onProjectChange() {
+    //     this.setState(function () {
+    //        return {
+    //             isLoading: Store.ProjectStore.isLoading(),
+    //         };
+    //     });
+    // }
 });
 
 export default App;

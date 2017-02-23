@@ -1,5 +1,8 @@
 import React from 'react';
 
+import ProjectActions from '../actions/ProjectsActions.js'
+import Store from '../stores/NotesStore.js';
+
 import ColorPicker from './ColorPicker.jsx';
 
 import './NoteEditor.less';
@@ -32,7 +35,14 @@ const NoteEditor = React.createClass({
             color: this.state.color
         };
 
-        this.props.onNoteAdd(newNote);
+        let currentProject = Store.ProjectStore.getCurrentProject();
+        if(!currentProject.notes){
+            currentProject.notes = [];
+        }
+        currentProject.notes.push(newNote);
+        ProjectActions.updateProject(currentProject);
+
+        //this.props.onNoteAdd(newNote);
         this.setState({ text: '', title: '', color: '#FFFFFF' });
     },
 

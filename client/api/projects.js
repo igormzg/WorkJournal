@@ -8,6 +8,14 @@ export default {
     },
 
     createProject(data) {
+        return axios.put(`${apiPrefix}/project`, data);
+    },
+
+    deleteProject(projectId) {
+        return axios.delete(`${apiPrefix}/project/${projectId}`);
+    },
+
+    updateProject(data) {
         return axios.post(`${apiPrefix}/project`, data);
     }
 }

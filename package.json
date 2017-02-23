@@ -24,7 +24,8 @@
     "mongoose": "*",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
-    "react-masonry-component": "^4.0.0"
+    "react-masonry-component": "^4.0.0",
+    "react-tabs": "^0.8.2"
   },
   "devDependencies": {
     "autoprefixer-loader": "*",

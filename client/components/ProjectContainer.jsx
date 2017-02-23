@@ -3,16 +3,14 @@ import React from 'react';
 import Store from '../stores/NotesStore';
 import ProjectActions from '../actions/ProjectsActions';
 import ProjectMenu from './ProjectMenu.jsx';
+import ProjectBody from './ProjectBody.jsx';
 
 import './ProjectContainer.less';
 
 const ProjectContainer = React.createClass({
     getInitialState() {
-        let projects = Store.ProjectStore.getProjects();
-        let currentProject = projects && projects.length > 0 ? projects[0] : null;
         return {
             projects: Store.ProjectStore.getProjects(),
-            currentProject: currentProject
         };
     },
 
@@ -22,29 +20,27 @@ const ProjectContainer = React.createClass({
 
     componentDidMount() { 
         Store.ProjectStore.addChangeListener(this._onProjectsChange);
+        Store.ProjectStore.addChangeCurrentListener(this._onCurrentProjectChange);
     },
 
     componentWillUnmount() {
         Store.ProjectStore.removeChangeListener(this._onProjectsChange);
+        Store.ProjectStore.removeChangeCurrentListener(this._onCurrentProjectChange);
     },
 
-    handleProjectChange(project) {
+    _onCurrentProjectChange(project) {
         this.setState(function () {
             return {
-                currentProject: project
+                currentProject: Store.ProjectStore.getCurrentProject()
             };
         });
     },
 
-    _onProjectsChange() {
-        let currentProject = this.state.currentProject ? this.state.currentProject : Store.ProjectStore.getProjects()[0];
-        this.setState(function () {
-           return {
+    _onProjectsChange() {        
+        this.setState({
                 isLoading: Store.ProjectStore.isLoading(),
                 projects: Store.ProjectStore.getProjects(),
-                currentProject: currentProject
-            };
-        });
+                currentProject: Store.ProjectStore.getCurrentProject() });
     },
 
     render() {
@@ -52,7 +48,7 @@ const ProjectContainer = React.createClass({
             <div>
                 <div className="row project-header">
                     <div className="column medium-3 height-full">
-                        <ProjectMenu projects={this.state.projects} currentProject={this.state.currentProject} onProjectChange={this.handleProjectChange}/>
+                        <ProjectMenu projects={this.state.projects} currentProject={this.state.currentProject}/>
                     </div>
                     <div className="column medium-9">
                         <label>Project:</label>
@@ -62,7 +58,9 @@ const ProjectContainer = React.createClass({
                     </div>
                 </div>
                 <hr/>
-                <div className="row project-body"></div>
+                <div className="row project-body">
+                    <ProjectBody />
+                </div>
             </div>
         )
     }

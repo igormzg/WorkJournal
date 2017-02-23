@@ -28,7 +28,7 @@ const ProjectMenu = React.createClass({
 
     _onProjectsCreate: function () {
         let newProject = Store.ProjectStore.getNewProject();
-        this.props.onProjectChange(newProject);
+        //ProjectActions.changeCurrentProject(newProject);
         this.setState({ menuState: this.menuStates.MAIN });
     },
 
@@ -38,8 +38,7 @@ const ProjectMenu = React.createClass({
         let newCurrentProject = this.props.projects.filter(function (project){
             return project._id == event.currentTarget.id;
         }) 
-        console.log(newCurrentProject[0]);
-        this.props.onProjectChange(newCurrentProject[0]);
+        ProjectActions.changeCurrentProject(newCurrentProject[0]);
     },
 
     //This method changed state of menu between 'Main view' and 'Create new project'
@@ -78,6 +77,11 @@ const ProjectMenu = React.createClass({
         ProjectActions.createProject(this.state.newProject);
     },
 
+    //handle click event on 'x' button of menu element
+    handleDeleteProjectClick: function(projectId) {
+        ProjectActions.deleteProject(projectId);
+    },
+
     render () {
         var menuPartial = null;
         if (this.state.menuState == this.menuStates.MAIN)
@@ -90,7 +94,9 @@ const ProjectMenu = React.createClass({
                                 <li key={project._id} id={project._id} 
                                     className={this.props.currentProject._id == project._id ? "active" : null}
                                     onClick={this.handleProjectChange} >
-                                    {project.name}
+                                        <span className='delete-icon' 
+                                            onClick={() => this.handleDeleteProjectClick(project._id)}> × </span>
+                                        {project.name}
                                 </li>
                             )
                         }

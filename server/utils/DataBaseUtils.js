@@ -40,7 +40,23 @@ export function createProject(data){
        name: data.name,
        description: data.description 
     });
-
     return project.save();
 }
 
+export function updateProject(data, next){
+
+    Project.findById(data._id, function (error, project) {
+        if (error || !project)
+            next(null, error);
+        Project.update(data, function (error, project) {
+            if (error)
+                next(null, error);
+            else
+                next(project);
+        });
+    });
+}
+
+export function deleteProject(id) {
+    return Project.findById(id).remove();
+}
