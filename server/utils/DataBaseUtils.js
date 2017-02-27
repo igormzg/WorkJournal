@@ -44,17 +44,8 @@ export function createProject(data){
 }
 
 export function updateProject(data, next){
-
-    Project.findById(data._id, function (error, project) {
-        if (error || !project)
-            next(null, error);
-        Project.update(data, function (error, project) {
-            if (error)
-                next(null, error);
-            else
-                next(project);
-        });
-    });
+        var query = {'_id': data._id};
+        return Project.findOneAndUpdate(query, data, {upsert:true});
 }
 
 export function deleteProject(id) {

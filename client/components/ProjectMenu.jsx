@@ -80,6 +80,8 @@ const ProjectMenu = React.createClass({
     //handle click event on 'x' button of menu element
     handleDeleteProjectClick: function(projectId) {
         ProjectActions.deleteProject(projectId);
+        event.stopPropagation();
+        window.event.cancelBubble = true;
     },
 
     render () {
@@ -116,7 +118,7 @@ const ProjectMenu = React.createClass({
                     <textarea className="none-resize" placeholder='Enter project description' rows={5}
                         onChange={this.handleNewProjectDescriptionChange}  />
                     <input type="button" className="button small width-full menu-button-margin" value="Create" 
-                        onClick={ this.handleCreateProjectClick } />
+                        disabled={!this.state.newProject.name} onClick={ this.handleCreateProjectClick } />
                     <input type="button" className="button small width-full menu-button-margin" value="Back" 
                         onClick={() => this.handleToggleMenuStateClick(this.menuStates.MAIN)} />
                 </div>

@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
+import ProjectActions from '../actions/ProjectsActions';
 
 const CHANGE_EVENT = 'change';
 const PROJECTS_UPDATE_EVENT = 'PROJECTS_UPDATE_EVENT';
@@ -128,7 +129,12 @@ AppDispatcher.register(function(action) {
         case AppConstants.LOAD_PROJECTS_SUCCESS: {
             ProjectStore.projects = action.projects;
             if(!ProjectStore.currentProject && ProjectStore.projects && ProjectStore.projects.length > 0){
-                ProjectStore.currentProject = ProjectStore.projects[0];
+                ProjectStore.currentProject = ProjectStore.projects[0];                
+                ProjectStore.emitChangeCurrentProject();
+            }
+            else if(ProjectStore.currentProject && ProjectStore.projects){
+                ProjectStore.currentProject = ProjectStore.projects.find(data => data._id == ProjectStore.currentProject._id); 
+                ProjectStore.emitChangeCurrentProject();
             }
             ProjectStore.emitChange();
             break;

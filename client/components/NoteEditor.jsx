@@ -68,14 +68,10 @@ const NoteEditor = React.createClass({
                         value={this.state.color}
                         onChange={this.handleColorChange}
                     />
-                    <button
-                        className='NoteEditor__button'
-                        disabled={!this.state.text}
-                        onClick={this.handleNoteAdd}
-                    >
-                        Add
-                    </button>
+
                 </div>
+                <input type="button" className="button small width-full menu-button-margin" value="Create" 
+                        disabled={!this.state.text} onClick={ this.handleNoteAdd } />
             </div>
         );
     }

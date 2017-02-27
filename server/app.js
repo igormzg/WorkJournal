@@ -49,22 +49,17 @@ app.get('/projects', (req, res) => {
 });
 
 app.put('/project', (req, res) => {
-   db.createProject(req.body).then(data => res.send(data));
+    db.createProject(req.body).then(data => res.send(data));
 });
 
 app.delete('/project/:id', (req, res) => {
-   db.deleteProject(req.params.id).then(data => res.send(data));
+    db.deleteProject(req.params.id).then(data => res.send(data));
 });
 
 app.post('/project', (req, res) => {
-   db.updateProject(req.body, function (data, err) {
-        if(err) 
-            res.status(404).send(err);
-        else
-            res.send(data);
-   });
+    db.updateProject(req.body).then(data => res.send(data));
 });
 
-const server = app.listen(serverPort, function() {
+const server = app.listen(serverPort, function () {
     console.log(`Server is up and running on port ${serverPort}`);
 });
