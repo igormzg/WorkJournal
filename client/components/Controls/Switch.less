@@ -1,0 +1,35 @@
+.switch {
+    margin-bottom: 1rem;
+    outline: 0;
+    position: relative;
+    user-select: none;
+    color: #fefefe;
+    font-weight: 700;
+    font-size: .875rem;
+}
+
+.switch-input {
+    opacity: 0;
+    position: absolute;
+}
+
+input+.switch-paddle {
+    margin: 0;
+}
+
+.switch-paddle {
+    background: #cacaca;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    width: 4rem;
+    height: 2rem;
+    transition: all .25s ease-out;
+    border-radius: 0;
+    color: inherit;
+    font-weight: inherit;
+}
+
+input:checked~.switch-paddle {
+    background: #2ba6cb;
+}

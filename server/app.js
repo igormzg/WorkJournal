@@ -23,11 +23,10 @@ app.get('/', (req, res) => {
     db.listNotes().then(data => res.send(data));
 });
 
-app.get('/notes', (req, res) => {
-    db.listNotes().then(data => res.send(data));
-});
-
 // RESTful api handlers
+//
+//Notes routing
+//
 app.get('/notes', (req, res) => {
     db.listNotes().then(data => res.send(data));
 });
@@ -58,6 +57,18 @@ app.delete('/project/:id', (req, res) => {
 
 app.post('/project', (req, res) => {
     db.updateProject(req.body).then(data => res.send(data));
+});
+
+//
+//Journal routing
+//
+
+app.put('/journal', (req, res) => {
+    db.createrProjectJournalRecord(req.body).then(data => res.send(data));
+});
+
+app.get('/journal', (req, res) => {
+    db.listProjectJournalRecords(req.query.projectId).then(data => res.send(data[0].journal));
 });
 
 const server = app.listen(serverPort, function () {

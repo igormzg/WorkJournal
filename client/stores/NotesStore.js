@@ -8,6 +8,7 @@ const CHANGE_EVENT = 'change';
 const PROJECTS_UPDATE_EVENT = 'PROJECTS_UPDATE_EVENT';
 const PROJECT_CREATE_EVENT = 'PROJECTS_CREATE_EVENT';
 const CHANGE_CURRENT_PROJECT_EVENT = 'CHANGE_CURRENT_PROJECT_EVENT';
+const JOURNAL_LOAD_EVENT = 'JOURNAL_LOAD_EVENT';
 
 let _notes = [];
 let _loadingError = null;
@@ -101,6 +102,27 @@ const ProjectStore = Object.assign({}, EventEmitter.prototype, {
     },
 });
 
+const JournalStore = Object.assign({}, EventEmitter.prototype, {
+    projects: [], 
+
+    getJournal() {
+        return this.journal;
+    },
+
+    emitLoad: function() {
+        this.emit(JOURNAL_LOAD_EVENT);
+    },
+
+    addLoadListener: function(callback){
+        this.on(JOURNAL_LOAD_EVENT, callback);
+    },
+
+    removeLoadListener: function(callback) {
+        this.removeListener(JOURNAL_LOAD_EVENT, callback);
+    }, 
+});
+
+
 AppDispatcher.register(function(action) {
     switch(action.type) {
         case AppConstants.LOAD_NOTES_REQUEST: {
@@ -128,12 +150,21 @@ AppDispatcher.register(function(action) {
 
         case AppConstants.LOAD_PROJECTS_SUCCESS: {
             ProjectStore.projects = action.projects;
+            //if current project doesn`t exist, set like first element of all projects
             if(!ProjectStore.currentProject && ProjectStore.projects && ProjectStore.projects.length > 0){
                 ProjectStore.currentProject = ProjectStore.projects[0];                
                 ProjectStore.emitChangeCurrentProject();
             }
+            //if current project is selected but doesn`t exist in new project list, set like first element of all projects
+            //else find current project in new projects list and update current project data
             else if(ProjectStore.currentProject && ProjectStore.projects){
-                ProjectStore.currentProject = ProjectStore.projects.find(data => data._id == ProjectStore.currentProject._id); 
+                let updatedCurrentProject = ProjectStore.projects.find(data => data._id == ProjectStore.currentProject._id); 
+                if (updatedCurrentProject) {
+                    ProjectStore.currentProject = updatedCurrentProject;
+                }
+                else {
+                    ProjectStore.currentProject = ProjectStore.projects[0];
+                }
                 ProjectStore.emitChangeCurrentProject();
             }
             ProjectStore.emitChange();
@@ -150,6 +181,11 @@ AppDispatcher.register(function(action) {
             ProjectStore.emitChangeCurrentProject();
         }
 
+        case AppConstants.LOAD_JOURNAL_SUCCESS: {
+            JournalStore.journal = action.journal;
+            JournalStore.emitLoad();
+        }
+
         default: {
             console.log(`No such handler: ${action.type}`);
         }
@@ -158,5 +194,6 @@ AppDispatcher.register(function(action) {
 
 export default {
     NotesStore: TasksStore,
-    ProjectStore: ProjectStore
+    ProjectStore: ProjectStore,
+    JournalStore: JournalStore
 }

@@ -8,5 +8,6 @@ export default keyMirror({
     LOAD_PROJECTS_SUCCESS: null,
     LOAD_PROJECTS_FAIL: null,
     CREATE_PROJECTS_SUCCESS: null,
-    CHANGE_CURRENT_PROJECT: null
+    CHANGE_CURRENT_PROJECT: null,
+    LOAD_JOURNAL_SUCCESS: null
 });

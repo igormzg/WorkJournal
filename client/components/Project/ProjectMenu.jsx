@@ -1,8 +1,8 @@
 import React from 'react';
 import keyMirror from 'keymirror';
 
-import Store from '../stores/NotesStore';
-import ProjectActions from '../actions/ProjectsActions';
+import Store from '../../stores/NotesStore';
+import ProjectActions from '../../actions/ProjectsActions';
 
 import './ProjectMenu.less';
 
@@ -14,28 +14,49 @@ const ProjectMenu = React.createClass({
 
     getInitialState() {
         return {
+            projects: Store.ProjectStore.getProjects(),
             menuState: this.menuStates.MAIN
         };
     },
 
+    componentWillMount() {
+        ProjectActions.loadProjects();
+    },
+
     componentDidMount() { 
         Store.ProjectStore.addCreateListener(this._onProjectsCreate);
+        Store.ProjectStore.addChangeListener(this._onProjectsChange);
+        Store.ProjectStore.addChangeCurrentListener(this._onCurrentProjectChange);
     },
 
     componentWillUnmount() {
         Store.ProjectStore.removeCreateListener(this._onProjectsCreate);
+        Store.ProjectStore.removeChangeListener(this._onProjectsChange);
+        Store.ProjectStore.removeChangeCurrentListener(this._onCurrentProjectChange);
+    },
+
+    _onCurrentProjectChange(project) {
+        this.setState({ 
+            currentProject: Store.ProjectStore.getCurrentProject() 
+        });
+    },
+
+    _onProjectsChange() {        
+        this.setState({
+                projects: Store.ProjectStore.getProjects(),
+                currentProject: Store.ProjectStore.getCurrentProject() 
+            });
     },
 
     _onProjectsCreate: function () {
         let newProject = Store.ProjectStore.getNewProject();
-        //ProjectActions.changeCurrentProject(newProject);
         this.setState({ menuState: this.menuStates.MAIN });
     },
 
     //Handle click event on menu element
     //change selected application project
     handleProjectChange: function (event) {
-        let newCurrentProject = this.props.projects.filter(function (project){
+        let newCurrentProject = this.state.projects.filter(function (project){
             return project._id == event.currentTarget.id;
         }) 
         ProjectActions.changeCurrentProject(newCurrentProject[0]);
@@ -80,8 +101,6 @@ const ProjectMenu = React.createClass({
     //handle click event on 'x' button of menu element
     handleDeleteProjectClick: function(projectId) {
         ProjectActions.deleteProject(projectId);
-        event.stopPropagation();
-        window.event.cancelBubble = true;
     },
 
     render () {
@@ -92,9 +111,9 @@ const ProjectMenu = React.createClass({
                 <div className="height-full">
                     <ul className="project-menu">
                         {
-                            this.props.projects.map(project =>
+                            this.state.projects.map(project =>
                                 <li key={project._id} id={project._id} 
-                                    className={this.props.currentProject._id == project._id ? "active" : null}
+                                    className={this.state.currentProject._id == project._id ? "active" : null}
                                     onClick={this.handleProjectChange} >
                                         <span className='delete-icon' 
                                             onClick={() => this.handleDeleteProjectClick(project._id)}> × </span>

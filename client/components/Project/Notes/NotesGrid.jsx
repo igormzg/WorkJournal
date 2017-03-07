@@ -1,10 +1,12 @@
 import React from 'react';
-import Note from './Note.jsx';
-import Store from '../stores/NotesStore.js';
-import ProjectActions from '../actions/ProjectsActions';
 import Masonry from 'react-masonry-component';
 
+import Note from './Note.jsx';
 import './NotesGrid.less';
+
+import Store from '../../../stores/NotesStore.js';
+import ProjectActions from '../../../actions/ProjectsActions';
+
 
 const NotesGrid = React.createClass({
     getInitialState() {

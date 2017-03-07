@@ -3,11 +3,7 @@ import React from 'react';
 import NoteEditor from './NoteEditor.jsx';
 import NotesGrid from './NotesGrid.jsx';
 
-const ProjectNotesTab = React.createClass({
-    handleNoteAdd: function (newNote) {
-        
-    },
-
+const NotesTab = React.createClass({
     render() {
         return (
             <div className='row'>
@@ -18,10 +14,9 @@ const ProjectNotesTab = React.createClass({
                 <div className='column medium-8'>
                     <NotesGrid />
                 </div>
-                {/*<NotesGrid notes={this.props.currentProject} onNoteDelete={this.handleNoteDelete} />*/}
             </div>
         );
     }
 });
 
-export default ProjectNotesTab;
+export default NotesTab;

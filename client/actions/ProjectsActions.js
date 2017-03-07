@@ -57,12 +57,22 @@ const ProjectActions = {
             console.error(err)
         );
     },
-
+    
     changeCurrentProject (project) {
         AppDispatcher.dispatch({
                 type: Constants.CHANGE_CURRENT_PROJECT,
                 project: project
             })
+    },
+
+    CreateJournalRecord (journalRecord, projectId) {
+        api.projects.createJournalRecord(journalRecord, projectId)
+        .then(() => {
+            this.loadProjects()
+        })
+        .catch(err =>
+            console.error(err)
+        );
     }
 };
 

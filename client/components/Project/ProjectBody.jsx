@@ -1,25 +1,10 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import ProjectNotesTab from './ProjectNotesTab.jsx'
+import NotesTab from './Notes/NotesTab.jsx'
+import JournalTab from './Journal/JournalTab.jsx';
 
 const ProjectBody = React.createClass({
-    // getInitialState() {
-
-    // },
-
-    // componentWillMount() {
-
-    // },
-
-    // componentDidMount() { 
-
-    // },
-
-    // componentWillUnmount() {
-        
-    // },
-
     render() {
         return (
             <div>                
@@ -29,10 +14,10 @@ const ProjectBody = React.createClass({
                         <Tab>Journal</Tab>
                     </TabList>
                     <TabPanel>
-                        <ProjectNotesTab currentProject={this.props.currentProject} />
+                        <NotesTab />
                     </TabPanel>
                     <TabPanel>
-                        <h2>Hello from Bar</h2>
+                        <JournalTab />
                     </TabPanel>
                 </Tabs>
             </div>

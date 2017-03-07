@@ -16,6 +16,7 @@
             "name": "Launch Program",
             "program": "${workspaceRoot}/server/app.js",
             "cwd": "${workspaceRoot}",
+            "sourceMaps": true,
             "outFiles": []
         },
         {

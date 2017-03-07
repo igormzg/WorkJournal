@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ProjectActions from '../actions/ProjectsActions.js'
-import Store from '../stores/NotesStore.js';
+import ProjectActions from '../../../actions/ProjectsActions.js'
+import Store from '../../../stores/NotesStore.js';
 
 import ColorPicker from './ColorPicker.jsx';
 
